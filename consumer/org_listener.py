@@ -13,7 +13,7 @@ from config.kfk_config import (
 from utils.data_converter import convert_data
 
 
-def start_listener():
+def start_org_consumer():
     # Khởi tạo consumer lắng nghe topic 'org'
     consumer = KafkaConsumer(
         ORG_TOPIC,
@@ -46,4 +46,4 @@ def start_listener():
 
 
 if __name__ == "__main__":
-    start_listener()
+    start_org_consumer()
