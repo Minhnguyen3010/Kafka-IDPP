@@ -1,118 +1,153 @@
+#version: '3.8'
+#
+#services:
+#  druid-coordinator:
+#    image: apache/druid:28.0.1
+#    container_name: druid-coordinator
+#    command: ["coordinator"]
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      - DRUID_XMX=128m
+#      - DRUID_XMS=128m
+#      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
+#      - DRUID_METADATA_STORAGE_TYPE=postgresql
+#      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+#      - DRUID_METADATA_STORAGE_USER=druid
+#      - DRUID_METADATA_STORAGE_PASSWORD=druid
+#    depends_on:
+#      - druid-metadata
+#      - zookeeper
+#
+#  druid-overlord:
+#    image: apache/druid:28.0.1
+#    container_name: druid-overlord
+#    command: ["overlord"]
+#    ports:
+#      - "8090:8090"
+#    environment:
+#      - DRUID_XMX=128m
+#      - DRUID_XMS=128m
+#      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
+#      - DRUID_METADATA_STORAGE_TYPE=postgresql
+#      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+#      - DRUID_METADATA_STORAGE_USER=druid
+#      - DRUID_METADATA_STORAGE_PASSWORD=druid
+#    depends_on:
+#      - druid-metadata
+#      - zookeeper
+#
+#  druid-broker:
+#    image: apache/druid:28.0.1
+#    container_name: druid-broker
+#    command: ["broker"]
+#    ports:
+#      - "8082:8082"
+#    environment:
+#      - DRUID_XMX=128m
+#      - DRUID_XMS=128m
+#      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
+#      - DRUID_METADATA_STORAGE_TYPE=postgresql
+#      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+#      - DRUID_METADATA_STORAGE_USER=druid
+#      - DRUID_METADATA_STORAGE_PASSWORD=druid
+#    depends_on:
+#      - druid-metadata
+#      - zookeeper
+#
+#  druid-historical:
+#    image: apache/druid:28.0.1
+#    container_name: druid-historical
+#    command: ["historical"]
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      - DRUID_XMX=128m
+#      - DRUID_XMS=128m
+#      - DRUID_PROCESSING_NUM_THREADS=1
+#      - DRUID_PROCESSING_BUFFER_SIZE_BYTES=16777216
+#      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
+#      - DRUID_METADATA_STORAGE_TYPE=postgresql
+#      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+#      - DRUID_METADATA_STORAGE_USER=druid
+#      - DRUID_METADATA_STORAGE_PASSWORD=druid
+#    depends_on:
+#      - druid-metadata
+#      - zookeeper
+#
+#  druid-middlemanager:
+#    image: apache/druid:28.0.1
+#    container_name: druid-middlemanager
+#    command: ["middleManager"]
+#    ports:
+#      - "8091:8091"
+#    environment:
+#      - DRUID_XMX=128m
+#      - DRUID_XMS=128m
+#      - DRUID_WORKER_CAPACITY=1
+#      - DRUID_PROCESSING_NUM_THREADS=1
+#      - DRUID_PROCESSING_BUFFER_SIZE_BYTES=16777216
+#      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
+#      - DRUID_METADATA_STORAGE_TYPE=postgresql
+#      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+#      - DRUID_METADATA_STORAGE_USER=druid
+#      - DRUID_METADATA_STORAGE_PASSWORD=druid
+#    depends_on:
+#      - druid-metadata
+#      - zookeeper
+#
+#  druid-router:
+#    image: apache/druid:28.0.1
+#    container_name: druid-router
+#    command: ["router"]
+#    ports:
+#      - "8888:8888"
+#    environment:
+#      - DRUID_XMX=128m
+#      - DRUID_XMS=128m
+#      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
+#      - DRUID_METADATA_STORAGE_TYPE=postgresql
+#      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+#      - DRUID_METADATA_STORAGE_USER=druid
+#      - DRUID_METADATA_STORAGE_PASSWORD=druid
+#    depends_on:
+#      - druid-metadata
+#      - zookeeper
+#
+#  druid-metadata:
+#    image: postgres:13
+#    container_name: druid-metadata
+#    environment:
+#      POSTGRES_USER: druid
+#      POSTGRES_PASSWORD: druid
+#      POSTGRES_DB: druid
+#    ports:
+#      - "5432:5432"
+#
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:7.5.0
+#    container_name: zookeeper
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#    ports:
+#      - "2181:2181"
+
+#CẤU HÌNH CHẠY DRUID DB TRÊN DOCKER COMPOSE RẤT TỐN RAM => MÁY NÀO KHỎE THÌ CHẠY
 version: '3.8'
 
 services:
-  druid-coordinator:
-    image: apache/druid:28.0.1
-    container_name: druid-coordinator
-    command: ["coordinator"]
-    ports:
-      - "8081:8081"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
     environment:
-      - DRUID_XMX=128m
-      - DRUID_XMS=128m
-      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
-      - DRUID_METADATA_STORAGE_TYPE=postgresql
-      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
-      - DRUID_METADATA_STORAGE_USER=druid
-      - DRUID_METADATA_STORAGE_PASSWORD=druid
-    depends_on:
-      - druid-metadata
-      - zookeeper
-
-  druid-overlord:
-    image: apache/druid:28.0.1
-    container_name: druid-overlord
-    command: ["overlord"]
+      ZOOKEEPER_CLIENT_PORT: 2181
     ports:
-      - "8090:8090"
-    environment:
-      - DRUID_XMX=128m
-      - DRUID_XMS=128m
-      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
-      - DRUID_METADATA_STORAGE_TYPE=postgresql
-      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
-      - DRUID_METADATA_STORAGE_USER=druid
-      - DRUID_METADATA_STORAGE_PASSWORD=druid
-    depends_on:
-      - druid-metadata
-      - zookeeper
-
-  druid-broker:
-    image: apache/druid:28.0.1
-    container_name: druid-broker
-    command: ["broker"]
-    ports:
-      - "8082:8082"
-    environment:
-      - DRUID_XMX=128m
-      - DRUID_XMS=128m
-      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
-      - DRUID_METADATA_STORAGE_TYPE=postgresql
-      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
-      - DRUID_METADATA_STORAGE_USER=druid
-      - DRUID_METADATA_STORAGE_PASSWORD=druid
-    depends_on:
-      - druid-metadata
-      - zookeeper
-
-  druid-historical:
-    image: apache/druid:28.0.1
-    container_name: druid-historical
-    command: ["historical"]
-    ports:
-      - "8083:8083"
-    environment:
-      - DRUID_XMX=128m
-      - DRUID_XMS=128m
-      - DRUID_PROCESSING_NUM_THREADS=1
-      - DRUID_PROCESSING_BUFFER_SIZE_BYTES=16777216
-      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
-      - DRUID_METADATA_STORAGE_TYPE=postgresql
-      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
-      - DRUID_METADATA_STORAGE_USER=druid
-      - DRUID_METADATA_STORAGE_PASSWORD=druid
-    depends_on:
-      - druid-metadata
-      - zookeeper
-
-  druid-middlemanager:
-    image: apache/druid:28.0.1
-    container_name: druid-middlemanager
-    command: ["middleManager"]
-    ports:
-      - "8091:8091"
-    environment:
-      - DRUID_XMX=128m
-      - DRUID_XMS=128m
-      - DRUID_WORKER_CAPACITY=1
-      - DRUID_PROCESSING_NUM_THREADS=1
-      - DRUID_PROCESSING_BUFFER_SIZE_BYTES=16777216
-      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
-      - DRUID_METADATA_STORAGE_TYPE=postgresql
-      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
-      - DRUID_METADATA_STORAGE_USER=druid
-      - DRUID_METADATA_STORAGE_PASSWORD=druid
-    depends_on:
-      - druid-metadata
-      - zookeeper
-
-  druid-router:
-    image: apache/druid:28.0.1
-    container_name: druid-router
-    command: ["router"]
-    ports:
-      - "8888:8888"
-    environment:
-      - DRUID_XMX=128m
-      - DRUID_XMS=128m
-      - DRUID_ZK_SERVICE_HOST=zookeeper:2181
-      - DRUID_METADATA_STORAGE_TYPE=postgresql
-      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
-      - DRUID_METADATA_STORAGE_USER=druid
-      - DRUID_METADATA_STORAGE_PASSWORD=druid
-    depends_on:
-      - druid-metadata
-      - zookeeper
+      - "2181:2181"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo ruok | nc -w 2 zookeeper 2181 >/dev/null 2>&1 && exit 0 || exit 1"]
+      interval: 5s
+      timeout: 2s
+      retries: 12
 
   druid-metadata:
     image: postgres:13
@@ -123,11 +158,145 @@ services:
       POSTGRES_DB: druid
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U druid -d druid -h localhost || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.0
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+  druid-coordinator:
+    image: apache/druid:28.0.1
+    container_name: druid-coordinator
+    command: ["coordinator"]
     ports:
-      - "2181:2181"
+      - "8081:8081"
+    environment:
+      - DRUID_XMX=256m
+      - DRUID_XMS=256m
+      - DRUID_ZK_SERVICE_HOST=zookeeper
+      - DRUID_ZK_SERVICE_PORT=2181
+      - DRUID_METADATA_STORAGE_TYPE=postgresql
+      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+      - DRUID_METADATA_STORAGE_USER=druid
+      - DRUID_METADATA_STORAGE_PASSWORD=druid
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      druid-metadata:
+        condition: service_healthy
+    restart: unless-stopped
+
+  druid-overlord:
+    image: apache/druid:28.0.1
+    container_name: druid-overlord
+    command: ["overlord"]
+    ports:
+      - "8090:8090"
+    environment:
+      - DRUID_XMX=256m
+      - DRUID_XMS=256m
+      - DRUID_ZK_SERVICE_HOST=zookeeper
+      - DRUID_ZK_SERVICE_PORT=2181
+      - DRUID_METADATA_STORAGE_TYPE=postgresql
+      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+      - DRUID_METADATA_STORAGE_USER=druid
+      - DRUID_METADATA_STORAGE_PASSWORD=druid
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      druid-metadata:
+        condition: service_healthy
+    restart: unless-stopped
+
+  druid-broker:
+    image: apache/druid:28.0.1
+    container_name: druid-broker
+    command: ["broker"]
+    ports:
+      - "8082:8082"
+    environment:
+      - DRUID_XMX=256m
+      - DRUID_XMS=256m
+      - DRUID_ZK_SERVICE_HOST=zookeeper
+      - DRUID_ZK_SERVICE_PORT=2181
+      - DRUID_METADATA_STORAGE_TYPE=postgresql
+      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+      - DRUID_METADATA_STORAGE_USER=druid
+      - DRUID_METADATA_STORAGE_PASSWORD=druid
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      druid-metadata:
+        condition: service_healthy
+    restart: unless-stopped
+
+  druid-historical:
+    image: apache/druid:28.0.1
+    container_name: druid-historical
+    command: ["historical"]
+    ports:
+      - "8083:8083"
+    environment:
+      - DRUID_XMX=512m
+      - DRUID_XMS=512m
+      - DRUID_PROCESSING_NUM_THREADS=1
+      - DRUID_PROCESSING_BUFFER_SIZE_BYTES=8388608    # 8 MB
+      - DRUID_ZK_SERVICE_HOST=zookeeper
+      - DRUID_ZK_SERVICE_PORT=2181
+      - DRUID_METADATA_STORAGE_TYPE=postgresql
+      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+      - DRUID_METADATA_STORAGE_USER=druid
+      - DRUID_METADATA_STORAGE_PASSWORD=druid
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      druid-metadata:
+        condition: service_healthy
+    restart: unless-stopped
+
+  druid-middlemanager:
+    image: apache/druid:28.0.1
+    container_name: druid-middlemanager
+    command: ["middleManager"]
+    ports:
+      - "8091:8091"
+    environment:
+      - DRUID_XMX=256m
+      - DRUID_XMS=256m
+      - DRUID_WORKER_CAPACITY=1
+      - DRUID_PROCESSING_NUM_THREADS=1
+      - DRUID_PROCESSING_BUFFER_SIZE_BYTES=8388608
+      - DRUID_ZK_SERVICE_HOST=zookeeper
+      - DRUID_ZK_SERVICE_PORT=2181
+      - DRUID_METADATA_STORAGE_TYPE=postgresql
+      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+      - DRUID_METADATA_STORAGE_USER=druid
+      - DRUID_METADATA_STORAGE_PASSWORD=druid
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      druid-metadata:
+        condition: service_healthy
+    restart: unless-stopped
+
+  druid-router:
+    image: apache/druid:28.0.1
+    container_name: druid-router
+    command: ["router"]
+    ports:
+      - "8888:8888"
+    environment:
+      - DRUID_XMX=256m
+      - DRUID_XMS=256m
+      - DRUID_ZK_SERVICE_HOST=zookeeper
+      - DRUID_ZK_SERVICE_PORT=2181
+      - DRUID_METADATA_STORAGE_TYPE=postgresql
+      - DRUID_METADATA_STORAGE_CONNECT_URI=jdbc:postgresql://druid-metadata:5432/druid
+      - DRUID_METADATA_STORAGE_USER=druid
+      - DRUID_METADATA_STORAGE_PASSWORD=druid
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      druid-metadata:
+        condition: service_healthy
+    restart: unless-stopped
