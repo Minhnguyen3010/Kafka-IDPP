@@ -10,7 +10,7 @@ from config.kfk_config import (
 )
 
 # Khởi tạo Redis client (tự sửa host nếu Docker)
-redis_client = redis.Redis(host="localhost", port=6379, db=0)
+redis_client = redis.Redis(host="192.168.100.118", port=6379, db=0)
 
 
 def start_std_consumer():
