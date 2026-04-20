@@ -35,14 +35,14 @@ def start_org_consumer():
     # Vòng lặp liên tục: mỗi khi có message mới thì xử lý
     for message in consumer:
         org_data = message.value
-        print(f"[RECEIVED] {org_data}")
+        print(f"[RECEIVED ORG] {org_data}")
 
         # Convert dữ liệu
         std_data = convert_data(org_data)
 
         # Đẩy sang topic 'std'
         producer.send(STD_TOPIC, std_data)
-        print(f"[SENT] {std_data}")
+        print(f"[SENT STD] {std_data}")
 
 
 if __name__ == "__main__":
